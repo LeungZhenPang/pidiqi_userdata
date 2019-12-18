@@ -10,7 +10,7 @@ export default new Vuex.Store({
     params: {    //请求所需参数
       pageNum: 1,
       project: 'shenhe_user',
-      datapsw: '',
+      datapsw: 'pidiqi2019',
       searchKeyword: '',
       isDeal: ''
     }
