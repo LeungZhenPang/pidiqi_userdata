@@ -10,6 +10,7 @@
       :header-cell-style="{background:'#67a6e6',color:'#fff'}"
       header-row-class-name="tableHead"
     >
+      <el-table-column fixed type="index" width="40" align="center"></el-table-column>
       <el-table-column fixed prop="project" label="项目"></el-table-column>
       <el-table-column fixed prop="uname" label="姓名"></el-table-column>
       <el-table-column fixed prop="phone" label="电话" width="120"></el-table-column>
@@ -166,13 +167,26 @@ export default {
       this.dealData(params)
     },
     //删除数据
-    confirmDelete(uid,uname){
-      let res = confirm('确定删除--'+uname+'?'+uid)
-      let params = Qs.stringify({ project: this.params.project, uid}); //数据格式作转换
-      if(res){
+    async confirmDelete(uid,uname){
+      const confirmRes = await this.$confirm(
+        '确定删除--'+uname+'?',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'waring'
+        }
+      ).catch(err => err)
+      if(confirmRes == 'confirm') {
+        let params = Qs.stringify({ project: this.params.project, uid}); //数据格式作转换
         this.deleteData(params)
-      }else{
-        return false
+        .then( res => {
+          if(res == 1){
+              this.$message.error({message:'删除成功',duration: 1500})
+          }
+        })
+      }else {
+        return this.$message.info({message:'已取消删除',duration:1500})
       }
     }
   },
@@ -188,7 +202,7 @@ export default {
 
 <style lang="less" scoped>
 .wrap {
-  width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding-top: 30px;
 }

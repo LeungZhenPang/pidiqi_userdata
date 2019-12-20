@@ -17,12 +17,12 @@
       </div>
       <!-- 搜索框 -->
       <div class="search fl">
-        <el-input placeholder="请输入搜索内容" v-model="searchKw" size="small">
+        <el-input placeholder="请输入搜索内容" v-model="params.searchKeyword" size="small" @input="getData()">
           <el-button slot="append" icon="el-icon-search" type="danger"></el-button>
         </el-input>
       </div>
 
-      <div class="exit fr">[退出]</div>
+      <div class="exit fr" @click="out">[退出]</div>
       <router-link class="router-link fr" to="/huodong">活动</router-link>
       <router-link class="router-link fr" to="/shiti">试题</router-link>
       <router-link class="router-link fr" to="/biaodan">表单</router-link>
@@ -33,11 +33,22 @@
 </template>
 
 <script>
+import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
 export default {
     data() {
         return {
-            searchKw: ''
         }
+    },
+    computed: {
+      ...mapState(['params'])
+    },
+    methods:{
+      ...mapActions(['getData']),
+      out() {
+        localStorage.removeItem('datapsw');
+        this.$router.push('/')
+        window.location.reload(true)
+      }
     }
 };
 </script>
@@ -46,7 +57,7 @@ export default {
 @base:#fd7830;
 .wrap {
   height: 60px;
-  background-color: #333;
+  background-color: #1d4063;
 }
 .main {
   width: 1200px;
@@ -96,6 +107,9 @@ export default {
 .router-link-active {
     color: @base;
     border-width: 4px;
+    background-color: #0e2e4e;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
 }
 }
 </style>

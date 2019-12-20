@@ -11,7 +11,7 @@ export default new Vuex.Store({
     params: {    //请求所需参数
       pageNum: 1,
       project: '',
-      datapsw: 'fd',
+      datapsw: '',
       searchKeyword: '',
       isDeal: ''
     }
@@ -42,6 +42,15 @@ export default new Vuex.Store({
     async deleteData({dispatch,commit,state},params) {   
       let {data} = await Axios.post('http://unobb.cn/pidiqidata/delete.php',params)
       dispatch('getData')   //重新请求数据
+      return data.code
+    },
+    //post
+    async postData({dispatch,commit,state},{url,params}) {
+      console.log(url)
+      console.log(params)
+      let {data} = await Axios.post(url,params)
+      dispatch('getData')   //重新请求数据
+      return data;
     }
   },
   modules: {

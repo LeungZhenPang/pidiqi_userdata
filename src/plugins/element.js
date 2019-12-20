@@ -10,7 +10,9 @@ import {
     FormItem, 
     Select, 
     Option, 
-    Switch
+    Switch,
+    Message,
+    MessageBox
 } from 'element-ui'
 
 Vue.use(Button)
@@ -24,3 +26,6 @@ Vue.use(FormItem)
 Vue.use(Select)
 Vue.use(Option)
 Vue.use(Switch)
+
+Vue.prototype.$message = Message
+Vue.prototype.$confirm = MessageBox.confirm

@@ -50,11 +50,19 @@ export default {
       if(data.code == 1) {
         this.params.datapsw = this.psw
         this.showLogin = false
-        this.getData()
+        this.$router.push('biaodan')
       }else{
         alert("密码错误")
         localStorage.removeItem('datapsw');
       }
+    }
+  },
+  created() {
+    if(localStorage['datapsw']){
+      this.psw = localStorage['datapsw'];
+      this.params.datapsw = this.psw
+      this.showLogin = false
+      this.$router.push('biaodan')
     }
   },
   computed: {
