@@ -289,7 +289,7 @@ export default {
 
 <style lang="less" scoped>
 .wrap {
-  width: 100%;
+  max-width: 1800px;
   margin: 0 auto;
   padding-top: 30px;
 }

@@ -1,8 +1,23 @@
 <template>
   <div id="app">
     <Nav></Nav>
+
     <router-view></router-view>
 
+    <div class="page-wrap">
+      <el-button-group style="margin-right:10px;position:relative;top:-2px;">
+        <el-button type="primary" size="small" @click="params.pageNum = 1">首页</el-button>
+        <el-button type="primary" size="small" @click="params.pageNum -= 1" :disabled="data.pageNum == 1">上一页</el-button>
+        <el-button type="primary" size="small" @click="params.pageNum += 1" :disabled="data.pageNum == data.pageCount">下一页</el-button>
+        <el-button type="primary" size="small" @click="params.pageNum = data.pageCount">尾页</el-button>
+      </el-button-group>
+      <el-input size="small" style="width:76px;" v-model="skipPage" @keyup.enter.native="skip()">
+        <el-button slot="append" icon="el-icon-search"></el-button>
+      </el-input>
+      <p>当前第{{params.pageNum}}/{{data.pageCount}}页 共{{data.recordCount}}条数据</p>
+    </div>
+
+    <!-- 登录页面 -->
     <div class="login_wrap" v-show="showLogin">
       <div class="login-logo">
         <svg
@@ -17,107 +32,148 @@
           />
         </svg>
       </div>
-			<div class="login_main">
-				<input type="text" id="datapsw" autofocus v-model="psw" @keyup.enter="login()">
-				<input type="button" id="login" value="进入" @click="login()">
-			</div>
-		</div>
+      <div class="login_main">
+        <input type="text" id="datapsw" autofocus v-model="psw" @keyup.enter="login()" />
+        <input type="button" id="login" value="进入" @click="login()" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import Nav from './components/Nav'  //导航组件
+import Nav from "./components/Nav"; //导航组件
 import { mapState, mapActions } from "vuex";
-import { async } from 'q';
-import Qs from 'qs';    //post数据转换
+import { async } from "q";
+import Qs from "qs"; //post数据转换
 export default {
-  name: 'app',
+  name: "app",
   data() {
     return {
-      psw: '',  //密码
-      showLogin: true,    //登录框显示
-    }
+      psw: "", //密码
+      showLogin: true, //登录框显示
+      skipPage: 1   //跳转页码
+    };
   },
   components: {
     Nav
   },
   methods: {
     ...mapActions(["getData"]),
+    // //页码跳转
+    skip() {
+      this.skipPage = parseInt(this.skipPage)
+      console.log(this.skipPage)
+      if(this.skipPage > this.data.pageCount){this.skipPage = this.data.pageCount}
+      if(this.skipPage < 1){this.skipPage = 1}
+      this.params.pageNum = this.skipPage
+    },
+    //登陆
     async login() {
-      localStorage['datapsw'] = this.psw;
-      let params = Qs.stringify({'datapsw': localStorage['datapsw']}); //数据格式作转换
-      let {data} = await axios.post('http://unobb.cn/pidiqidata/checkLogin.php',params)
-      if(data.code == 1) {
-        this.params.datapsw = this.psw
-        this.showLogin = false
-        this.$router.push('biaodan')
-      }else{
-        alert("密码错误")
-        localStorage.removeItem('datapsw');
+      localStorage["datapsw"] = this.psw;
+      let params = Qs.stringify({ datapsw: localStorage["datapsw"] }); //数据格式作转换
+      let { data } = await axios.post(
+        "http://unobb.cn/pidiqidata/checkLogin.php",
+        params
+      );
+      if (data.code == 1) {
+        this.params.datapsw = this.psw;
+        this.showLogin = false;
+        this.$router.push("biaodan");
+      } else {
+        alert("密码错误");
+        localStorage.removeItem("datapsw");
       }
     }
   },
-  created() {
-    if(localStorage['datapsw']){
-      this.psw = localStorage['datapsw'];
-      this.params.datapsw = this.psw
-      this.showLogin = false
-      this.$router.push('biaodan')
+  computed: {
+    ...mapState(["params","data"])
+  },
+  watch: {
+    //页码变化重新加载
+    'params.pageNum':function() {
+      this.getData()
+    },
+    // 路由变化
+    $route(to, from) {
+      this.params.pageNum = 1;
     }
   },
-  computed: {
-    ...mapState(["params"])
-  }
-}
+  created() {
+    if (localStorage["datapsw"]) {
+      this.psw = localStorage["datapsw"];
+      this.params.datapsw = this.psw;
+      this.showLogin = false;
+    }
+  },
+};
 </script>
 
-<style>
+<style lang="less">
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
 }
-.login-logo{
+
+// 登陆
+.login-logo {
   width: 200px;
   margin: 300px auto 0;
 }
-.login_wrap{
-	width: 100%;
-	height: 100%;
-	background:#333;
-	position: absolute;
-	top: 0;
-	left: 0;
+.login_wrap {
+  width: 100%;
+  height: 100%;
+  background: #333;
+  position: absolute;
+  top: 0;
+  left: 0;
   z-index: 99;
 }
-.login_wrap .login_main{
-	width: 180px;
-	margin: 0 auto;
+.login_wrap .login_main {
+  width: 180px;
+  margin: 0 auto;
 }
-.login_wrap #datapsw{
-	height: 24px;
-	border: none;
-	outline: none;
-	border-radius: 4px;
-	width: 120px;
-	margin: 20px auto;
-	padding-left: 10px;
-	box-sizing: border-box;
-	height: 34px;
+.login_wrap #datapsw {
+  height: 24px;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  width: 120px;
+  margin: 20px auto;
+  padding-left: 10px;
+  box-sizing: border-box;
+  height: 34px;
 }
-.login_wrap #login{
-	color: #fff;
-	background:#fd7830;
-	border: none;
-	outline: none;
-	padding: 0 10px;
-	border-radius: 4px;
-	height: 34px;
-	cursor:pointer;
-	font-size: 16px;
-	box-sizing: border-box;
-	line-height: 34px;
+.login_wrap #login {
+  color: #fff;
+  background: #fd7830;
+  border: none;
+  outline: none;
+  padding: 0 10px;
+  border-radius: 4px;
+  height: 34px;
+  cursor: pointer;
+  font-size: 16px;
+  box-sizing: border-box;
+  line-height: 34px;
+}
+
+// 页码
+.page-wrap {
+  padding: 20px;
+  p {
+    text-align: cetner;
+    color: #ccc;
+    font-size: 16px;
+    padding-top: 10px;
+  }
+  input.el-input__inner {
+    padding: 0 10px
+  }
+}
+div.el-input-group__append {
+  padding: 0 10px;
 }
 </style>

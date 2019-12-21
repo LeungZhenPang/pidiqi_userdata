@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import {
     Button,
+    ButtonGroup,
     Input,
     Table,
     TableColumn, 
@@ -16,6 +17,7 @@ import {
 } from 'element-ui'
 
 Vue.use(Button)
+Vue.use(ButtonGroup)
 Vue.use(Input)
 Vue.use(Table)
 Vue.use(TableColumn)

@@ -88,11 +88,11 @@
         <el-form-item label="省份">
           <el-input v-model="addParams.shengfen"></el-input>
         </el-form-item>
+        <el-form-item label="详情">
+          <el-input type="textarea" v-model="addParams.details" style="width:460px"></el-input>
+        </el-form-item>
         <el-form-item label="首考">
           <el-input v-model="addParams.first"></el-input>
-        </el-form-item>
-        <el-form-item label="详情">
-          <el-input type="textarea" v-model="addParams.details"></el-input>
         </el-form-item>
         <el-form-item label="分配">
           <el-input v-model="addParams.apportion"></el-input>
@@ -281,7 +281,7 @@ export default {
 
 <style lang="less" scoped>
 .wrap {
-  width: 100%;
+  max-width: 1800px;
   margin: 0 auto;
   padding-top: 30px;
 }

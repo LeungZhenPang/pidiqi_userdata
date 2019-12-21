@@ -18,7 +18,7 @@
       <!-- 搜索框 -->
       <div class="search fl">
         <el-input placeholder="请输入搜索内容" v-model="params.searchKeyword" size="small" @input="getData()">
-          <el-button slot="append" icon="el-icon-search" type="danger"></el-button>
+          <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </div>
 
@@ -69,9 +69,6 @@ export default {
   }
   .search {
       padding: 14px;
-      .el-button {
-          padding: 0;
-      }
       .el-input__inner:focus {
           border-color: none;
       }
