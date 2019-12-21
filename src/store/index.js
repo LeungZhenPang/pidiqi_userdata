@@ -13,7 +13,9 @@ export default new Vuex.Store({
       project: '',
       datapsw: '',
       searchKeyword: '',
-      isDeal: ''
+      isDeal: '',
+      startDate: '',
+      endDate: ''
     }
   },
   mutations: {

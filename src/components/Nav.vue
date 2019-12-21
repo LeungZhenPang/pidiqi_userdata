@@ -53,7 +53,33 @@ export default {
     data() {
       return {
         pickerOptions: {
-          shortcuts: [{
+          shortcuts: [
+            {
+            text: '今天',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              picker.$emit('pick', [start, end]);
+            }
+          },
+          {
+            text: '最近两天',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', [start, end]);
+            }
+          }, 
+          {
+            text: '最近三天',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 2);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
             text: '最近一周',
             onClick(picker) {
               const end = new Date();
@@ -67,14 +93,6 @@ export default {
               const end = new Date();
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
               picker.$emit('pick', [start, end]);
             }
           }]
@@ -96,11 +114,13 @@ export default {
       // 日期过滤
       dateFilter() {
         if(this.dateFilterData){
-          let startDate = this.changDateFormat(this.dateFilterData[0])
-          let endDate = this.changDateFormat(this.dateFilterData[1])
-          console.log(startDate,endDate)
+          this.params.startDate = this.changDateFormat(this.dateFilterData[0])
+          this.params.endDate = this.changDateFormat(this.dateFilterData[1]) + ' 99:99'
+          this.getData()
         }else {
-          console.log('kong')
+          this.params.startDate = ''
+          this.params.endDate = ''
+          this.getData()
         }
       },
       //转化日期格式
