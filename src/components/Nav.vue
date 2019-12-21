@@ -22,6 +22,21 @@
         </el-input>
       </div>
 
+      <!-- 日期过滤 -->
+      <div class="date-filter fl">
+        <el-date-picker
+          size="small"
+          v-model="dateFilterData"
+          type="daterange"
+          align="right"
+          unlink-panels
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :picker-options="pickerOptions"
+          @change="dateFilter()">
+        </el-date-picker>
+      </div>
       <div class="exit fr" @click="out">[退出]</div>
       <router-link class="router-link fr" to="/huodong">活动</router-link>
       <router-link class="router-link fr" to="/shiti">试题</router-link>
@@ -36,18 +51,66 @@
 import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
 export default {
     data() {
-        return {
-        }
+      return {
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
+        dateFilterData: ''
+      };
     },
     computed: {
       ...mapState(['params'])
     },
     methods:{
       ...mapActions(['getData']),
+      //退出登陆
       out() {
         localStorage.removeItem('datapsw');
         this.$router.push('/')
         window.location.reload(true)
+      },
+      // 日期过滤
+      dateFilter() {
+        if(this.dateFilterData){
+          let startDate = this.changDateFormat(this.dateFilterData[0])
+          let endDate = this.changDateFormat(this.dateFilterData[1])
+          console.log(startDate,endDate)
+        }else {
+          console.log('kong')
+        }
+      },
+      //转化日期格式
+      changDateFormat(date){
+        let a = date.getFullYear();
+        let b = date.getMonth();
+        b<9?b="0"+(b+1):b+=1;
+        let c = date.getDate();
+        c<10?c="0"+c:c=c;
+        return `${a}-${b}-${c}`
       }
     }
 };
@@ -78,6 +141,14 @@ export default {
           border: none;
       }
   }
+
+//日期过滤
+.date-filter {
+  padding-top: 14px;
+  div.el-date-editor--daterange.el-input__inner {
+    width: 248px;
+  }
+}
 
 //   退出登录
 .exit {
