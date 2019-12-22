@@ -5,10 +5,10 @@
       v-loading="loading"
       style="width: 100%"
       max-height="700"
-      stripe
       border
       :header-cell-style="{background:'#67a6e6',color:'#fff'}"
       header-row-class-name="tableHead"
+      :row-class-name="tableRowClassName"
     >
       <el-table-column fixed type="index" width="40" align="center"></el-table-column>
       <el-table-column fixed prop="project" label="项目"></el-table-column>
@@ -190,6 +190,13 @@ export default {
   },
   methods: {
     ...mapActions(["getData", "entryData", "dealData", "deleteData", "postData"]),
+    //未录入添加warning-row样式
+    tableRowClassName({ row, rowIndex }) {
+      if(row.input == ''){
+        return 'warning-row';
+      }
+      return ''
+    },
     //创建当前时间
    getDate(){
        let theDate = new Date();

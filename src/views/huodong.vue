@@ -5,10 +5,10 @@
       v-loading="loading"
       style="width: 100%"
       max-height="700"
-      stripe
       border
       :header-cell-style="{background:'#67a6e6',color:'#fff'}"
       header-row-class-name="tableHead"
+      :row-class-name="tableRowClassName"
     >
       <el-table-column fixed type="index" width="40" align="center"></el-table-column>
       <el-table-column fixed prop="project" label="项目"></el-table-column>
@@ -79,12 +79,13 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="录入">
-          <el-switch v-model="curRowData.input == 'on'"></el-switch>
+          <el-switch v-model="curRowData.input == 'on'"
+          @change="curRowData.input == 'on'? curRowData.input ='':curRowData.input = 'on'"></el-switch>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="entryDialog = false">取 消</el-button>
-        <el-button type="primary" @click="confirmEntry(curRowData.uid, curRowData.apportion)">确 定</el-button>
+        <el-button type="primary" @click="confirmEntry(curRowData.uid, curRowData.apportion, curRowData.input)">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -135,6 +136,13 @@ export default {
   },
   methods: {
     ...mapActions(["getData", "entryData", "dealData", "deleteData"]),
+    //未录入添加warning-row样式
+    tableRowClassName({ row, rowIndex }) {
+      if(row.input == ''){
+        return 'warning-row';
+      }
+      return ''
+    },
       //录入小按钮
     entry(data) {
       this.curRowData = data;
@@ -150,9 +158,9 @@ export default {
       this.editDialog = true;
     },
       //确定录入
-    confirmEntry(uid, apportion) {
+    confirmEntry(uid, apportion,input) {
       this.entryDialog = false;
-      let params = Qs.stringify({ project: this.params.project, uid, apportion }); //数据格式作转换
+      let params = Qs.stringify({ project: this.params.project, uid, apportion, input }); //数据格式作转换
       this.entryData(params);
     },
     //确定修改

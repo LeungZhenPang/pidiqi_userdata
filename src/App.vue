@@ -176,4 +176,9 @@ export default {
 div.el-input-group__append {
   padding: 0 10px;
 }
+
+
+.el-table .warning-row {
+  background: #ffdede;
+}
 </style>
