@@ -10,6 +10,7 @@ import huodong from '../views/huodong'
 Vue.use(VueRouter)
 
 const routes = [
+  { path: '/', redirect: '/biaodan'},
   { path: '/shouzi', component: shouzi},
   { path: '/xinxiliu', component: xinxiliu},
   { path: '/biaodan', component: biaodan},

@@ -33,7 +33,7 @@
           ></span>
         </template>
       </el-table-column>
-      <el-table-column prop="deal_price" label="有效情况"></el-table-column>
+      <el-table-column prop="deal_price" label="情况" width="160"></el-table-column>
       <el-table-column prop="education" label="学历"></el-table-column>
       <el-table-column prop="profession" label="专业" width="160"></el-table-column>
       <el-table-column prop="year" label="年限"></el-table-column>
@@ -116,7 +116,7 @@
             <el-option label="成交" value="deal"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="有效情况">
+        <el-form-item label="情况">
           <el-input v-model="curRowData.deal_price"></el-input>
         </el-form-item>
       </el-form>

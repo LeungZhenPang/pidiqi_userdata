@@ -33,7 +33,7 @@
           ></span>
         </template>
       </el-table-column>
-      <el-table-column prop="deal_price" label="有效情况"></el-table-column>
+      <el-table-column prop="deal_price" label="情况" width="160"></el-table-column>
       <el-table-column prop="details" label="详情" width="500"></el-table-column>
       <el-table-column prop="education" label="学历"></el-table-column>
       <el-table-column prop="profession" label="专业" width="160"></el-table-column>
@@ -100,7 +100,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="addDialog = false">取 消</el-button>
-        <el-button type="primary" @click="confirmAdd(curRowData.uid, curRowData.apportion)">确 定</el-button>
+        <el-button type="primary" @click="confirmAdd()">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -148,7 +148,7 @@
             <el-option label="成交" value="deal"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="有效情况">
+        <el-form-item label="情况">
           <el-input v-model="curRowData.deal_price"></el-input>
         </el-form-item>
         <el-form-item label="分配">
@@ -232,7 +232,7 @@ export default {
       this.editDialog = true;
     },
       //确定添加
-    confirmAdd(uid, apportion) {
+    confirmAdd() {
       this.addDialog = false;
       let url = 'http://unobb.cn/' + this.params.project + '/receive_ajax.php'
       let params = Qs.stringify(this.addParams); //数据格式作转换

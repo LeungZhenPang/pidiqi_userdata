@@ -11,7 +11,7 @@
       :row-class-name="tableRowClassName"
     >
       <el-table-column fixed type="index" width="40" align="center"></el-table-column>
-      <el-table-column fixed prop="project" label="项目"></el-table-column>
+      <el-table-column fixed prop="project" label="项目" width="120"></el-table-column>
       <el-table-column fixed prop="uname" label="姓名"></el-table-column>
       <el-table-column fixed prop="phone" label="电话" width="120"></el-table-column>
       <el-table-column prop="date" label="日期" width="140"></el-table-column>
@@ -33,7 +33,7 @@
           ></span>
         </template>
       </el-table-column>
-      <el-table-column prop="deal_price" label="有效情况"></el-table-column>
+      <el-table-column prop="deal_price" label="情况" width="160"></el-table-column>
       <el-table-column prop="education" label="学历"></el-table-column>
       <el-table-column prop="profession" label="专业" width="220"></el-table-column>
       <el-table-column prop="year" label="年限"></el-table-column>
@@ -100,7 +100,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="addDialog = false">取 消</el-button>
-        <el-button type="primary" @click="confirmAdd(curRowData.uid, curRowData.apportion)">确 定</el-button>
+        <el-button type="primary" @click="confirmAdd()">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -144,7 +144,7 @@
             <el-option label="成交" value="deal"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="有效情况">
+        <el-form-item label="情况">
           <el-input v-model="curRowData.deal_price"></el-input>
         </el-form-item>
         <el-form-item label="分配">
@@ -172,7 +172,7 @@ export default {
       addDialog: false, //录入对话框
       editDialog: false, //编辑对话框
       curRowData: "", //当前行数据
-      addParams: {
+      addParams: {    //添加的数据
           project: '',
           umame: '',
           phone: '',
@@ -228,8 +228,9 @@ export default {
       this.editDialog = true;
     },
       //确定添加
-    confirmAdd(uid, apportion) {
+    confirmAdd() {
       this.addDialog = false;
+      console.log(this.addParams)
       let url = 'http://unobb.cn/' + this.params.project + '/receive_ajax.php'
       let params = Qs.stringify(this.addParams); //数据格式作转换
       this.postData({url,params})

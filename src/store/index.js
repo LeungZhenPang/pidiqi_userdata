@@ -48,8 +48,6 @@ export default new Vuex.Store({
     },
     //post
     async postData({dispatch,commit,state},{url,params}) {
-      console.log(url)
-      console.log(params)
       let {data} = await Axios.post(url,params)
       dispatch('getData')   //重新请求数据
       return data;
