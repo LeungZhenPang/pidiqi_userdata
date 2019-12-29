@@ -105,16 +105,20 @@ export default {
       };
     },
     computed: {
-      ...mapState(['params'])
+      ...mapState(['params','data'])
     },
     methods:{
       ...mapActions(['getData']),
       //刷新数据
       refreshData(){
+        let oldPage = this.data.recordCount
         this.getData()
           .then( res => {
-            if(res.data.length != 0){
-                this.$message({message:'刷新成功',type:'success',duration: 1000})
+            if(res.recordCount == oldPage){
+              this.$message({message:'无新数据刷新',duration: 1000})
+            }else {
+              let n = res.recordCount-oldPage
+              this.$message({message:'有'+n+'条新数据',type:'success',duration: 1500})
             }
             })
       },
