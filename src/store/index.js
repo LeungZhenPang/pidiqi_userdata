@@ -29,6 +29,7 @@ export default new Vuex.Store({
     async getData({commit,state}) {
       let {data} = await Axios.get('http://unobb.cn/pidiqidata/loadData.php',{params: state.params})
       commit('changeData',data)
+      return data
     },
     //录入数据
     async entryData({dispatch,commit,state},params) {

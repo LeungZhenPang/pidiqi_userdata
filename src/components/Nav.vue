@@ -37,6 +37,10 @@
           @change="dateFilter()">
         </el-date-picker>
       </div>
+
+      <!-- 刷新 -->
+      <div class="refresh el-icon-refresh fl" @click="refreshData()"></div>
+
       <div class="exit fr" @click="out">[退出]</div>
       <router-link class="router-link fr" to="/huodong">活动</router-link>
       <router-link class="router-link fr" to="/shiti">试题</router-link>
@@ -105,6 +109,15 @@ export default {
     },
     methods:{
       ...mapActions(['getData']),
+      //刷新数据
+      refreshData(){
+        this.getData()
+          .then( res => {
+            if(res.data.length != 0){
+                this.$message({message:'刷新成功',type:'success',duration: 1000})
+            }
+            })
+      },
       //退出登陆
       out() {
         localStorage.removeItem('datapsw');
@@ -168,6 +181,15 @@ export default {
   div.el-date-editor--daterange.el-input__inner {
     width: 248px;
   }
+}
+
+// 刷新
+.refresh {
+  color: #fff;
+  margin-left: 10px;
+  font-size: 24px;
+  line-height: 60px;
+  cursor: pointer;
 }
 
 //   退出登录
