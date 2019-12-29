@@ -95,7 +95,11 @@
           <el-input v-model="addParams.company"></el-input>
         </el-form-item>
         <el-form-item label="分配">
-          <el-input v-model="addParams.apportion"></el-input>
+          <el-input v-model="addParams.apportion" @input="addParams.input = 'on'"></el-input>
+        </el-form-item>
+        <el-form-item label="录入">
+          <el-switch v-model="addParams.input == 'on'" 
+          @change="addParams.input == 'on'? addParams.input ='':addParams.input = 'on'"></el-switch>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -184,7 +188,7 @@ export default {
           first: '',
           company: '',
           apportion: '',
-          input: 'on'
+          input: ''
       }
     };
   },
@@ -230,7 +234,6 @@ export default {
       //确定添加
     confirmAdd() {
       this.addDialog = false;
-      console.log(this.addParams)
       let url = 'http://unobb.cn/' + this.params.project + '/receive_ajax.php'
       let params = Qs.stringify(this.addParams); //数据格式作转换
       this.postData({url,params})
