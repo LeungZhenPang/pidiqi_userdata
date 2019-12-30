@@ -181,4 +181,17 @@ div.el-input-group__append {
 .el-table .warning-row {
   background: #ffdede;
 }
+
+//滚动条美化
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #bac7d6;
+    border-radius: 4px
+}
 </style>
