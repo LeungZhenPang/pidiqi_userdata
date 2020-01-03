@@ -71,11 +71,12 @@
           <el-input v-model="curRowData.phone" disabled></el-input>
         </el-form-item>
         <el-form-item label="分配">
-          <el-input
+          <el-autocomplete
+            :fetch-suggestions="loadSalesman"
             v-model="curRowData.apportion"
             @input="curRowData.input = 'on'"
             ref="customerInput"
-          ></el-input>
+          ></el-autocomplete>
         </el-form-item>
         <el-form-item label="录入">
           <el-switch v-model="curRowData.input == 'on'"
@@ -135,6 +136,9 @@ export default {
   },
   methods: {
     ...mapActions(["getData", "entryData", "dealData", "deleteData"]),
+    loadSalesman(queryString,cb){   //分配业务员的输入建议
+      cb(this.salesman)
+    },
     //未录入添加warning-row样式
     tableRowClassName({ row, rowIndex }) {
       if(row.input == ''){
@@ -193,7 +197,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["data", "loading", "params"])
+    ...mapState(["data", "loading", "params","salesman"])
   },
   created() {
     this.params.project = 'student_user'

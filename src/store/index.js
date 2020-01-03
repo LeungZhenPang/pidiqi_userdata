@@ -16,7 +16,14 @@ export default new Vuex.Store({
       isDeal: '',
       startDate: '',
       endDate: ''
-    }
+    },
+    salesman: [       //分配业务员建议
+      {'value': '李小明'},
+      {'value': '黄丽媚'},
+      {'value': '陈土清'},
+      {'value': '庞华燕'},
+      {'value': '张梦芳'}
+    ]
   },
   mutations: {
     changeData(state,data){   //重新加载数据
