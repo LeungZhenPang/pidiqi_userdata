@@ -21,7 +21,6 @@ export default new Vuex.Store({
       {'value': '李小明'},
       {'value': '黄丽媚'},
       {'value': '陈土清'},
-      {'value': '庞华燕'},
       {'value': '张梦芳'}
     ]
   },
