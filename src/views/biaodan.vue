@@ -142,8 +142,10 @@ export default {
   },
   methods: {
     ...mapActions(["getData", "entryData", "dealData", "deleteData"]),
-    loadSalesman(queryString,cb){   //分配业务员的输入建议
-      cb(this.salesman)
+    //分配业务员的输入建议
+    loadSalesman(queryString,cb){   
+      let salesman = queryString ? this.salesman.filter(val=>val.value.includes(queryString)) : this.salesman;
+      cb(salesman)
     },
     //未录入添加warning-row样式
     tableRowClassName({ row, rowIndex }) {

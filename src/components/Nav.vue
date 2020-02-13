@@ -53,6 +53,8 @@
 
 <script>
 import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
+import Axios from 'axios'
+
 export default {
     data() {
       return {
@@ -105,7 +107,11 @@ export default {
       };
     },
     computed: {
-      ...mapState(['params','data'])
+      ...mapState(['params','data']),
+      salesman: {
+        get(){ return this.$store.state.salesman},
+        set(val){ this.$store.state.salesman = val}
+      }
     },
     methods:{
       ...mapActions(['getData']),
@@ -148,9 +154,20 @@ export default {
         let c = date.getDate();
         c<10?c="0"+c:c=c;
         return `${a}-${b}-${c}`
+      },
+      //加载分配人建议
+      async getSalesMan (){
+        let {data} = await Axios.get('http://unobb.cn/salesman/loadData.php')
+        console.log(this.salesman)
+        console.log(data)
+        this.salesman = data
+        console.log(this.salesman)
       }
+    },
+    created() {
+      this.getSalesMan()    //加载分配人数据
     }
-};
+}
 </script>
 
 <style lang="less" scoped>
