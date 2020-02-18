@@ -15,7 +15,9 @@ import {
     Message,
     MessageBox,
     DatePicker,
-    Autocomplete
+    Autocomplete,
+    CheckboxGroup,
+    Checkbox
 } from 'element-ui'
 
 Vue.use(Button)
@@ -32,6 +34,8 @@ Vue.use(Option)
 Vue.use(Switch)
 Vue.use(DatePicker)
 Vue.use(Autocomplete)
+Vue.use(CheckboxGroup)
+Vue.use(Checkbox)
 
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

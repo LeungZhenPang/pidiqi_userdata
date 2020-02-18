@@ -81,6 +81,7 @@
             :fetch-suggestions="loadSalesman"
             v-model="curRowData.apportion"
             @input="curRowData.input = 'on'"
+            @select="changeSalesmanOrder(curRowData.apportion)"
             ref="customerInput"
           ></el-autocomplete>
         </el-form-item>
@@ -142,6 +143,7 @@ export default {
   },
   methods: {
     ...mapActions(["getData", "entryData", "dealData", "deleteData"]),
+    ...mapMutations(["changeSalesmanOrder"]),
     //分配业务员的输入建议
     loadSalesman(queryString,cb){   
       let salesman = queryString ? this.salesman.filter(val=>val.value.includes(queryString)) : this.salesman;

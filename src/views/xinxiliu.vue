@@ -64,6 +64,11 @@
     <!-- 添加对话框 -->
     <el-dialog title="添加数据" :visible.sync="addDialog" width="600px">
       <el-form ref="form" :model="curRowData" label-width="80px" :inline="true">
+        <el-form-item label="解析">
+          <el-input type="textarea" style="width:460px" v-model="discernText" autosize
+          @input="discern(discernText)"
+          ></el-input>
+        </el-form-item>
         <el-form-item label="时间">
           <el-input v-model="addParams.date" disabled></el-input>
         </el-form-item>
@@ -99,6 +104,7 @@
             :fetch-suggestions="loadSalesman"
             v-model="addParams.apportion"
             @input="addParams.input = 'on'"
+            @select="changeSalesmanOrder(addParams.apportion)"
           ></el-autocomplete>
         </el-form-item>
         <el-form-item label="录入">
@@ -159,7 +165,9 @@
           <el-autocomplete 
           :fetch-suggestions="loadSalesman"
           v-model="curRowData.apportion"
-           @input="curRowData.input = 'on'">
+           @input="curRowData.input = 'on'"
+           @select="changeSalesmanOrder(curRowData.apportion)"
+           >
           </el-autocomplete>
         </el-form-item>
         <el-form-item label="录入">
@@ -183,6 +191,7 @@ export default {
     return {
       addDialog: false, //录入对话框
       editDialog: false, //编辑对话框
+      discernText: '',  //识别的文本
       curRowData: "", //当前行数据
       addParams: {    //添加的数据
           project: '',
@@ -202,6 +211,7 @@ export default {
   },
   methods: {
     ...mapActions(["getData", "entryData", "dealData", "deleteData", "postData"]),
+    ...mapMutations(["changeSalesmanOrder"]),
     //分配业务员的输入建议
     loadSalesman(queryString,cb){   
       let salesman = queryString ? this.salesman.filter(val=>val.value.includes(queryString)) : this.salesman;
@@ -215,19 +225,19 @@ export default {
       return ''
     },
     //创建当前时间
-   getDate(){
-       let theDate = new Date();
-        let a = theDate.getFullYear();
-        let b = theDate.getMonth();
-        b<9?b="0"+(b+1):b+=1;
-        let c = theDate.getDate();
-        c<10?c="0"+c:c=c;
-        let d = theDate.getHours();
-        d<10?d="0"+d:d=d;
-        let e = theDate.getMinutes();
-        e<10?e="0"+e:e=e;
-        theDate =`${a}-${b}-${c} ${d}:${e}`;
-        return theDate
+    getDate(){
+      let theDate = new Date();
+      let a = theDate.getFullYear();
+      let b = theDate.getMonth();
+      b<9?b="0"+(b+1):b+=1;
+      let c = theDate.getDate();
+      c<10?c="0"+c:c=c;
+      let d = theDate.getHours();
+      d<10?d="0"+d:d=d;
+      let e = theDate.getMinutes();
+      e<10?e="0"+e:e=e;
+      theDate =`${a}-${b}-${c} ${d}:${e}`;
+      return theDate
     },
     //添加小按钮
     entry(data) {
@@ -239,12 +249,44 @@ export default {
         this.$refs.customerInput.$el.querySelector("input").focus();
       }, 10);
     },
-      //编辑小按钮
+    //编辑小按钮
     edit(data) {
       this.curRowData = data;
       this.editDialog = true;
     },
-      //确定添加
+    //识别自动填写
+    discern(txt) {
+      let phone = txt.match(/1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}/)
+      phone && (this.addParams.phone = phone[0])
+      let education = txt.match(/(本科|中专|大专|高中)(以上)?(以下)?/)
+      education && (this.addParams.education = education[0])
+      let uname = txt.match(/(李|王|张|刘|陈|杨|赵|黄|周|吴|徐|孙|胡|朱|高|林|何|郭|马|罗|梁|宋|郑|谢|韩|唐|冯|于|董|萧|程|曹|袁|邓|许|傅|沈|曾|彭|吕|苏|卢|蒋|蔡|贾|丁|魏|薛|叶|阎|余|潘|杜|戴|夏|钟|汪|田|任|姜|范|方|石|姚|谭|廖|邹|熊|金|陆|郝|孔|白|崔|康|毛|邱|秦|江|史|顾|侯|邵|孟|龙|万|段|漕|钱|汤|尹|黎|易|常|武|乔|贺|赖|龚|文|庞|樊|兰|殷|施|陶|洪|翟|安|颜|倪|严|牛|温|芦|季|俞|章|鲁|葛|伍|韦|申|尤|毕|聂|丛|焦|向|柳|邢|路|岳|齐|沿|梅|莫|庄|辛|管)[\u4e00-\u9fa5]{0,2}/)
+      uname && (this.addParams.uname = uname[0])
+      let shengfen = txt.match(/(广州|深圳|海|汕头|佛山|韶关|湛江|肇庆|江门|茂名|惠州|梅州|汕尾|河源|阳江|清远|东莞|中山|潮州|揭阳|云浮|河南|安徽|福建|甘肃|贵州|海南|河北|黑龙江|湖北|湖南|吉林|江苏|江西|辽宁|青海|山东|山西|陕西|四川|云南|浙江|广西|宁夏|内蒙|西藏|新疆)/)
+      shengfen && (this.addParams.shengfen = shengfen[0])
+      let year = txt.match(/(两|2|3|4|5|6|7)年(以上)?(以下)?/)
+      year && (this.addParams.year = year[0])
+      let project = txt.match(/(二建报考条件|BIM考证|二建培训|二建报考预审|二级建造师考试条件预审平台|一级建造师报考条件查询)/)
+      if(project) {
+        switch (project[0]) {
+          case '二建报考条件':
+          case '二建报考预审':
+          case '二建培训':
+            this.addParams.project = '二建（新）'
+            break;
+          case 'BIM考证':
+            this.addParams.project = 'BIM'
+            break;
+          case '二级建造师考试条件预审平台':
+            this.addParams.project = '二建'
+            break;
+          case '一级建造师报考条件查询':
+            this.addParams.project = '一建'
+            break;
+        }
+      }
+    },
+    //确定添加
     confirmAdd() {
       this.addDialog = false;
       let url = 'http://unobb.cn/' + this.params.project + '/receive_ajax.php'

@@ -109,7 +109,6 @@
     </el-dialog>
 
     <!-- 编辑对话框 -->
-    <!-- 编辑对话框 -->
     <el-dialog title="录入分配" :visible.sync="editDialog" width="600px">
       <el-form ref="form" :model="curRowData" label-width="80px" :inline="true">
         <el-form-item label="日期">

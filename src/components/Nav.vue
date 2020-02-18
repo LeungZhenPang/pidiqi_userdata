@@ -39,7 +39,9 @@
       </div>
 
       <!-- 刷新 -->
-      <div class="refresh el-icon-refresh fl" @click="refreshData()"></div>
+      <div class="refresh el-icon-refresh fl" @click="refreshData()"></div>      
+      <!-- 分配icon -->
+      <div class="refresh el-icon-user fl" @click="salesmanDialog = true"></div>
 
       <div class="exit fr" @click="out">[退出]</div>
       <router-link class="router-link fr" to="/huodong">活动</router-link>
@@ -47,6 +49,17 @@
       <router-link class="router-link fr" to="/biaodan">表单</router-link>
       <router-link class="router-link fr" to="/xinxiliu">信息流</router-link>
       <router-link class="router-link fr" to="/shouzi">首咨</router-link>
+
+      <!-- 分配对话框 -->
+      <el-dialog title="分配人员" :visible.sync="salesmanDialog" width="600px">
+        <el-checkbox-group v-model="checkSalesman" size="medium">
+          <el-checkbox v-for="man in allSalesman" :label="man.value" border></el-checkbox>
+        </el-checkbox-group>
+        <p style="margin-top: 20px;font-size: 14px;line-height: 24px">
+          <span v-for="man in salesman">{{man.value}}  &gt </span>
+        </p>
+      </el-dialog>
+
     </div>
   </div>
 </template>
@@ -103,18 +116,27 @@ export default {
             }
           }]
         },
-        dateFilterData: ''
+        dateFilterData: '',   //日期过滤数据
+        salesmanDialog: false,   //分配人员对话框
+        allSalesman: [],      //所有分配人员
+        checkSalesman: []
       };
     },
     computed: {
-      ...mapState(['params','data']),
-      salesman: {
-        get(){ return this.$store.state.salesman},
-        set(val){ this.$store.state.salesman = val}
+      ...mapState(['params','data','salesman']),
+    },
+    watch: {
+      //选择后的分配人员
+      checkSalesman: function (val) {
+        let arr = []
+        val.forEach((item,index) => {
+          arr[index] = {value: item}
+        })
+        this.$store.state.salesman = arr
       }
     },
     methods:{
-      ...mapActions(['getData']),
+      ...mapActions(['getData','changeSalesman']),
       //刷新数据
       refreshData(){
         let oldPage = this.data.recordCount
@@ -158,10 +180,7 @@ export default {
       //加载分配人建议
       async getSalesMan (){
         let {data} = await Axios.get('http://unobb.cn/salesman/loadData.php')
-        console.log(this.salesman)
-        console.log(data)
-        this.salesman = data
-        console.log(this.salesman)
+        this.allSalesman = data
       }
     },
     created() {
@@ -242,5 +261,14 @@ export default {
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
 }
+}
+
+//分配对话框
+.el-checkbox {
+  width: 100px;
+  margin: 5px 10px;
+}
+.el-checkbox:last-of-type {
+  margin-right: 10px;
 }
 </style>

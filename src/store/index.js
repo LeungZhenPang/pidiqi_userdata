@@ -23,6 +23,22 @@ export default new Vuex.Store({
     changeData(state,data){   //重新加载数据
       state.data = data
       state.loading = false
+    },
+    //修改选中业务员数据
+    changeSalesman(state,data) {
+      state.salesman = data
+    },
+    //修改选中业务员顺序
+    changeSalesmanOrder (state,val) {
+      state.salesman.forEach((item, index) => {
+        var delIndex
+        if(item.value == val) {
+          let last = state.salesman.length
+          state.salesman[last] = state.salesman[index]
+          delIndex = index
+        }
+        if(delIndex != undefined){ state.salesman.splice(delIndex, 1)}
+      });
     }
   },
   actions: {
