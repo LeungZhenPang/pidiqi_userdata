@@ -67,13 +67,14 @@
         <el-form-item label="解析">
           <el-input type="textarea" style="width:460px" v-model="discernText" autosize
           @input="discern(discernText)"
+           ref="customerInput"
           ></el-input>
         </el-form-item>
         <el-form-item label="时间">
           <el-input v-model="addParams.date" disabled></el-input>
         </el-form-item>
         <el-form-item label="项目">
-          <el-input v-model="addParams.project" ref="customerInput"></el-input>
+          <el-input v-model="addParams.project"></el-input>
         </el-form-item>
         <el-form-item label="姓名">
           <el-input v-model="addParams.uname"></el-input>
@@ -246,7 +247,7 @@ export default {
       this.addDialog = true;
         //录入表单聚焦
       setTimeout(() => {
-        this.$refs.customerInput.$el.querySelector("input").focus();
+        this.$refs.customerInput.$el.querySelector("textarea").focus();
       }, 10);
     },
     //编辑小按钮
@@ -266,7 +267,9 @@ export default {
       shengfen && (this.addParams.shengfen = shengfen[0])
       let year = txt.match(/(两|2|3|4|5|6|7)年(以上)?(以下)?/)
       year && (this.addParams.year = year[0])
-      let project = txt.match(/(二建报考条件|BIM考证|二建培训|二建报考预审|二级建造师考试条件预审平台|一级建造师报考条件查询)/)
+      let profession = txt.match(/(工程类|工程经济类|其他专业)/)
+      profession && (this.addParams.profession = profession[0])
+      let project = txt.match(/(二建报考条件|BIM考证|二建培训|二建报考预审|二级建造师考试条件预审平台|一级建造师报考条件查询|gdt)/)
       if(project) {
         switch (project[0]) {
           case '二建报考条件':
@@ -283,6 +286,9 @@ export default {
           case '一级建造师报考条件查询':
             this.addParams.project = '一建'
             break;
+          case 'gdt':
+            this.addParams.project = '二建（广点通）'
+            break;
         }
       }
     },
@@ -297,6 +303,7 @@ export default {
               this.$message({message:'添加成功',type:'success',duration: 1500})
           }
       })
+      this.discernText = ''
       for (let key in this.addParams) {
           this.addParams[key] = ''
       }
