@@ -25,6 +25,9 @@
         <template v-slot="slotProps">
           <span
             :class="{
+              'iconfont icon-a':slotProps.row.deal == 'a',
+              'iconfont icon-b':slotProps.row.deal == 'b',
+              'iconfont icon-c':slotProps.row.deal == 'c',
               'el-icon-circle-close':slotProps.row.deal == 'invalid',
               'el-icon-circle-check':slotProps.row.deal == 'valid',
               'el-icon-s-check':slotProps.row.deal == 'deal'
@@ -114,6 +117,9 @@
         <el-form-item label="有效">
           <el-select v-model="curRowData.deal" placeholder="是否有效" style="width:185px">
             <el-option label="有效" value="valid"></el-option>
+            <el-option label="A类" value="a"></el-option>
+            <el-option label="B类" value="b"></el-option>
+            <el-option label="C类" value="c"></el-option>
             <el-option label="无效" value="invalid"></el-option>
             <el-option label="成交" value="deal"></el-option>
           </el-select>

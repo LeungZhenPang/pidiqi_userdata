@@ -1,0 +1,30 @@
+{
+  "id": "1655939",
+  "name": "pidiqi_userdata",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "13159535",
+      "name": "a",
+      "font_class": "icon_a",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "13159661",
+      "name": "b",
+      "font_class": "icon_b",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "13159722",
+      "name": "c",
+      "font_class": "icon_c",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    }
+  ]
+}

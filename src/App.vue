@@ -109,12 +109,24 @@ export default {
 </script>
 
 <style lang="less">
+@import url("./assets/font/iconfont.css");
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+// 自定义 icon
+.icon-a {
+  color: #06c082;
+}
+.icon-b {
+  color: #3089fd;
+}
+.icon-c {
+  color: #7e7e7e;
 }
 
 // 登陆
