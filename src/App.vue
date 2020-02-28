@@ -78,7 +78,7 @@ export default {
       if (data.code == 1) {
         this.params.datapsw = this.psw;
         this.showLogin = false;
-        this.$router.push("biaodan");
+        this.getData()
       } else {
         alert("密码错误");
         localStorage.removeItem("datapsw");

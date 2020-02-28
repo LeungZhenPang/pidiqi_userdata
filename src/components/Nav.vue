@@ -49,6 +49,7 @@
       <router-link class="router-link fr" to="/biaodan">表单</router-link>
       <router-link class="router-link fr" to="/xinxiliu">信息流</router-link>
       <router-link class="router-link fr" to="/shouzi">首咨</router-link>
+      <router-link class="router-link fr" to="/sz_biaodan">深圳</router-link>
 
       <!-- 分配对话框 -->
       <el-dialog title="分配人员" :visible.sync="salesmanDialog" width="600px">
