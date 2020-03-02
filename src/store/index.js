@@ -13,7 +13,12 @@ export default new Vuex.Store({
       project: '',
       datapsw: '',
       searchKeyword: '',
-      isDeal: '',
+      deal01: '',
+      deal02: '',
+      deal03: '',
+      deal04: '',
+      deal05: '',
+      deal06: '',
       startDate: '',
       endDate: ''
     },

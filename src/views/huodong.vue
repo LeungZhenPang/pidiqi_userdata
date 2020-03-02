@@ -1,6 +1,7 @@
 <template>
   <div class="wrap">
     <el-table
+      @filter-change="filterDeal"
       :data="data.data"
       v-loading="loading"
       style="width: 100%"
@@ -21,7 +22,18 @@
         </template>
       </el-table-column>
       <el-table-column prop="apportion" label="分配"></el-table-column>
-      <el-table-column prop="deal" label="有效" align="center" width="50">
+      <el-table-column 
+        prop="deal" label="有效" align="center" width="66"
+        column-key="deal"
+        :filters="[
+          {text: '有效',value: 'valid'},
+          {text: '无效', value: 'invalid'},
+          {text: 'A类', value: 'a'},
+          {text: 'B类', value: 'b'},
+          {text: 'C类', value: 'c'},
+          {text: '成交', value: 'deal'}
+        ]"
+        >
         <template v-slot="slotProps">
           <span
             :class="{
@@ -143,6 +155,14 @@ export default {
   },
   methods: {
     ...mapActions(["getData", "entryData", "dealData", "deleteData"]),
+    //过滤是否有效
+    filterDeal(value){
+      for(var i=0;i < 6; i++){
+        let n = 'deal0' + (i + 1)
+        this.params[n] = value.deal[i]?value.deal[i]:''
+      }
+      this.getData()
+    },
     //分配业务员的输入建议
     loadSalesman(queryString,cb){   
       let salesman = queryString ? this.salesman.filter(val=>val.value.includes(queryString)) : this.salesman;

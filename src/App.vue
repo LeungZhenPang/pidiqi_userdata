@@ -206,4 +206,12 @@ div.el-input-group__append {
     background-color: #bac7d6;
     border-radius: 4px
 }
+
+// 表头条件筛选小箭头颜色
+span.el-table__column-filter-trigger i {
+  color: #fff
+}
+div.el-table th>.cell.highlight{
+  color: #fff
+}
 </style>
