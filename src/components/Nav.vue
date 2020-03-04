@@ -17,7 +17,7 @@
       </div>
       <!-- 搜索框 -->
       <div class="search fl">
-        <el-input placeholder="请输入搜索内容" v-model="params.searchKeyword" size="small" @input="getData()">
+        <el-input placeholder="请输入搜索内容" v-model="params.searchKeyword" size="small" @input="getData()" clearable>
           <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </div>
@@ -59,6 +59,11 @@
         <p style="margin-top: 20px;font-size: 14px;line-height: 24px">
           <span v-for="man in salesman">{{man.value}}  &gt </span>
         </p>
+        <span slot="footer" class="dialog-footer">
+          <el-input v-model="createSalesmanName" placeholder="添加业务员姓名" style="width:30%;margin-right:10px"></el-input>
+          <el-button type="primary" @click="createSalesman">添 加</el-button>
+          <el-button type="danger" @click="deleteSalesman">删 除</el-button>
+        </span>
       </el-dialog>
 
     </div>
@@ -120,7 +125,8 @@ export default {
         dateFilterData: '',   //日期过滤数据
         salesmanDialog: false,   //分配人员对话框
         allSalesman: [],      //所有分配人员
-        checkSalesman: []
+        checkSalesman: [],    //选中分配人员
+        createSalesmanName: ''    //新增分配人员姓名
       };
     },
     computed: {
@@ -138,6 +144,27 @@ export default {
     },
     methods:{
       ...mapActions(['getData','changeSalesman']),
+      //添加分配人员
+      async createSalesman(){
+        if(!this.createSalesmanName == ''){
+          let uname = this.createSalesmanName
+          const {data} = await Axios.post('http://unobb.cn/salesman/createSalesman.php',`uname=${uname}`)
+          console.log(data)
+          this.createSalesmanName = ''
+          this.getSalesMan()
+        }
+      },
+      //删除分配人员
+      async deleteSalesman(){
+        if(this.checkSalesman.length > 0){
+          const delData = this.checkSalesman.join('and')
+          console.log(delData)
+          const {data} = await Axios.post('http://unobb.cn/salesman/deleteSalesman.php',`delData=${delData}`)
+          console.log(data)
+          this.getSalesMan()
+          this.checkSalesman = []
+        }
+      },
       //刷新数据
       refreshData(){
         let oldPage = this.data.recordCount
