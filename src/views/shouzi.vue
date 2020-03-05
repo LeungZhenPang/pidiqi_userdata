@@ -55,15 +55,8 @@
       <el-table-column prop="year" label="年限"></el-table-column>
       <el-table-column prop="shengfen" label="省份" width="130"></el-table-column>
       <el-table-column prop="first" label="首考" align="center" width="50"></el-table-column>
-      <el-table-column fixed="right" label="操作" width="140">
+      <el-table-column fixed="right" label="操作" width="100">
         <template v-slot="soltProps">
-          <el-button
-            type="info"
-            icon="el-icon-plus"
-            size="mini"
-            plain
-            @click="entry(soltProps.row)"
-          ></el-button>
           <el-button
             type="primary"
             icon="el-icon-edit"
@@ -75,53 +68,6 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <!-- 添加对话框 -->
-    <el-dialog title="添加数据" :visible.sync="addDialog" width="600px">
-      <el-form ref="form" :model="curRowData" label-width="80px" :inline="true">
-        <el-form-item label="时间">
-          <el-input v-model="addParams.date" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="项目">
-          <el-input v-model="addParams.project" ref="customerInput"></el-input>
-        </el-form-item>
-        <el-form-item label="姓名">
-          <el-input v-model="addParams.uname"></el-input>
-        </el-form-item>
-        <el-form-item label="电话">
-          <el-input v-model="addParams.phone"></el-input>
-        </el-form-item>
-        <el-form-item label="学历">
-          <el-input v-model="addParams.education"></el-input>
-        </el-form-item>
-        <el-form-item label="专业">
-          <el-input v-model="addParams.profession"></el-input>
-        </el-form-item>
-        <el-form-item label="年限">
-          <el-input v-model="addParams.year"></el-input>
-        </el-form-item>
-        <el-form-item label="省份">
-          <el-input v-model="addParams.shengfen"></el-input>
-        </el-form-item>
-        <el-form-item label="详情">
-          <el-input type="textarea" v-model="addParams.details" style="width:460px"></el-input>
-        </el-form-item>
-        <el-form-item label="首考">
-          <el-input v-model="addParams.first"></el-input>
-        </el-form-item>
-        <el-form-item label="分配">
-          <el-autocomplete
-            :fetch-suggestions="loadSalesman"
-            v-model="addParams.apportion"
-            @input="addParams.input = 'on'"
-          ></el-autocomplete>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="addDialog = false">取 消</el-button>
-        <el-button type="primary" @click="confirmAdd()">确 定</el-button>
-      </span>
-    </el-dialog>
 
     <!-- 编辑对话框 -->
     <el-dialog title="录入分配" :visible.sync="editDialog" width="600px">
@@ -198,23 +144,8 @@ import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      addDialog: false, //录入对话框
       editDialog: false, //编辑对话框
       curRowData: "", //当前行数据
-      addParams: {
-          project: '',
-          umame: '',
-          phone: '',
-          education: '',
-          profession: '',
-          year: '',
-          shengfen: '',
-          date: '',
-          first: '',
-          apportion: '',
-          details: '',
-          input: 'on'
-      }
     };
   },
   methods: {
@@ -239,45 +170,10 @@ export default {
       }
       return ''
     },
-    //创建当前时间
-   getDate(){
-       let theDate = new Date();
-        let a = theDate.getFullYear();
-        let b = theDate.getMonth();
-        b<9?b="0"+(b+1):b+=1;
-        let c = theDate.getDate();
-        c<10?c="0"+c:c=c;
-        let d = theDate.getHours();
-        d<10?d="0"+d:d=d;
-        let e = theDate.getMinutes();
-        e<10?e="0"+e:e=e;
-        theDate =`${a}-${b}-${c} ${d}:${e}`;
-        return theDate
-    },
-    //添加小按钮
-    entry(data) {
-      this.curRowData = data;
-      this.addParams.date = this.getDate()
-      this.addDialog = true;
-        //录入表单聚焦
-      setTimeout(() => {
-        this.$refs.customerInput.$el.querySelector("input").focus();
-      }, 10);
-    },
       //编辑小按钮
     edit(data) {
       this.curRowData = data;
       this.editDialog = true;
-    },
-      //确定添加
-    confirmAdd() {
-      this.addDialog = false;
-      let url = 'http://unobb.cn/' + this.params.project + '/receive_ajax.php'
-      let params = Qs.stringify(this.addParams); //数据格式作转换
-      this.postData({url,params});
-      for (let key in this.addParams) {
-          this.addParams[key] = ''
-      }
     },
     //确定修改
     confirmEdit(curRowData) {
