@@ -1,21 +1,32 @@
 <template>
   <div id="app">
-    <Nav></Nav>
 
-    <router-view></router-view>
+    <div class="wrap">
 
-    <div class="page-wrap">
-      <el-button-group style="margin-right:10px;position:relative;top:-2px;">
-        <el-button type="primary" size="small" @click="params.pageNum = 1">首页</el-button>
-        <el-button type="primary" size="small" @click="params.pageNum -= 1" :disabled="data.pageNum == 1">上一页</el-button>
-        <el-button type="primary" size="small" @click="params.pageNum += 1" :disabled="data.pageNum == data.pageCount">下一页</el-button>
-        <el-button type="primary" size="small" @click="params.pageNum = data.pageCount">尾页</el-button>
-      </el-button-group>
-      <el-input size="small" style="width:76px;" v-model="skipPage" @keyup.enter.native="skip()">
-        <el-button slot="append" icon="el-icon-search"></el-button>
-      </el-input>
-      <p>当前第{{params.pageNum}}/{{data.pageCount}}页 共{{data.recordCount}}条数据</p>
+      <SideNav class="side-nav"></SideNav>
+
+      <div class="main">
+
+        <Nav></Nav>
+        <div class="router-wrap">
+         <router-view></router-view>
+        </div>
+
+        <div class="page-wrap">
+          <el-button-group style="margin-right:10px;position:relative;top:-2px;">
+            <el-button type="primary" size="small" @click="params.pageNum = 1">首页</el-button>
+            <el-button type="primary" size="small" @click="params.pageNum -= 1" :disabled="data.pageNum == 1">上一页</el-button>
+            <el-button type="primary" size="small" @click="params.pageNum += 1" :disabled="data.pageNum == data.pageCount">下一页</el-button>
+            <el-button type="primary" size="small" @click="params.pageNum = data.pageCount">尾页</el-button>
+          </el-button-group>
+          <el-input size="small" style="width:76px;" v-model="skipPage" @keyup.enter.native="skip()">
+            <el-button slot="append" icon="el-icon-search"></el-button>
+          </el-input>
+          <p>当前第{{params.pageNum}}/{{data.pageCount}}页 共{{data.recordCount}}条数据</p>
+        </div>
+      </div>
     </div>
+    
 
     <!-- 登录页面 -->
     <div class="login_wrap" v-show="showLogin">
@@ -42,6 +53,7 @@
 
 <script>
 import Nav from "./components/Nav"; //导航组件
+import SideNav from "./components/SideNav"; //侧导航
 import { mapState, mapActions } from "vuex";
 import { async } from "q";
 import Qs from "qs"; //post数据转换
@@ -55,7 +67,8 @@ export default {
     };
   },
   components: {
-    Nav
+    Nav,
+    SideNav
   },
   methods: {
     ...mapActions(["getData"]),
@@ -111,11 +124,28 @@ export default {
 <style lang="less">
 @import url("./assets/font/iconfont.css");
 #app {
+  height: 100%;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  .side-nav {
+    flex: 0 0 200px;
+  }
+  .main {
+    width: 800px;
+    flex: 1 1;
+    .router-wrap {
+      padding:0 40px;
+    }
+  }
 }
 
 // 自定义 icon

@@ -7,6 +7,7 @@ import biaodan from '../views/biaodan'
 import shiti from '../views/shiti'
 import huodong from '../views/huodong'
 import sz_biaodan from '../views/sz_biaodan'
+import cooperation from '../views/cooperation'
 
 Vue.use(VueRouter)
 
@@ -17,7 +18,8 @@ const routes = [
   { path: '/biaodan', component: biaodan},
   { path: '/shiti', component: shiti},
   { path: '/huodong', component: huodong},
-  { path: '/sz_biaodan', component: sz_biaodan}
+  { path: '/sz_biaodan', component: sz_biaodan},
+  { path: '/cooperation', component: cooperation}
 ]
 
 const router = new VueRouter({
