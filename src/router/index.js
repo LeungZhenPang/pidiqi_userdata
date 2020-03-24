@@ -8,6 +8,7 @@ import shiti from '../views/shiti'
 import huodong from '../views/huodong'
 import sz_biaodan from '../views/sz_biaodan'
 import cooperation from '../views/cooperation'
+import weekdata from '../views/weekdata'
 
 Vue.use(VueRouter)
 
@@ -19,7 +20,8 @@ const routes = [
   { path: '/shiti', component: shiti},
   { path: '/huodong', component: huodong},
   { path: '/sz_biaodan', component: sz_biaodan},
-  { path: '/cooperation', component: cooperation}
+  { path: '/cooperation', component: cooperation},
+  { path: '/weekdata', component: weekdata}
 ]
 
 const router = new VueRouter({

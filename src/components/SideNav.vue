@@ -16,7 +16,7 @@
       </div>
 
       <div class="nav">
-        <div class="item active">
+        <div class="item" :class="itemIndex==0?'active':''" @click="itemIndex = 0">
           <div class="tit"><span class="el-icon-notebook-2"></span>项目</div>
           <div class="link">
             <router-link class="router-link" to="/biaodan">表单</router-link>
@@ -28,10 +28,13 @@
             <router-link class="router-link" to="/cooperation">合作机构</router-link>
           </div>
         </div>
-        <div class="item">
-          <div class="tit"><span class="el-icon-s-data"></span>数据分析</div>
+        <div class="item" :class="itemIndex==1?'active':''" @click="itemIndex = 1">
+          <div class="tit"><span class="el-icon-s-data"></span>数据统计</div>
+          <div class="link">
+            <router-link class="router-link" to="/weekdata">7天内数据波动</router-link>
+          </div>
         </div>
-        <div class="item">
+        <div class="item" :class="itemIndex==2?'active':''" @click="itemIndex = 2">
           <div class="tit"><span class="el-icon-unlock"></span>账号权限</div>
         </div>
       </div>
@@ -41,7 +44,11 @@
 
 <script>
 export default {
-
+  data() {
+    return {
+      itemIndex: 0
+    }
+  }
 }
 </script>
 
